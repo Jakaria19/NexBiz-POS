@@ -1,3 +1,5 @@
+"use client";
+
 // Copy Customers page and filter cust.due > 0
 import Sidebar from "@/components/Sidebar";
 import { useState, useEffect } from "react";
