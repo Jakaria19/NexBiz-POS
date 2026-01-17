@@ -1,45 +1,51 @@
-// src/app/salesman/page.js
-"use client";
-import { useState } from "react";
+import Sidebar from "@/components/Sidebar";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import toast from "react-hot-toast";
 
-export default function SalesmanPage() {
-  const [staff, setStaff] = useState([
-    { id: 1, name: "Rahim", totalSale: 5000 },
-  ]);
+export default function Salesmen() {
+  const [name, setName] = useState("");
+  const [salesmen, setSalesmen] = useState([]);
 
-  const addStaff = (e) => {
-    e.preventDefault();
-    const name = e.target.staffName.value;
-    setStaff([...staff, { id: Date.now(), name, totalSale: 0 }]);
-    toast.success("Salesman added!");
-    e.target.reset();
+  useEffect(() => {
+    axios.get("/api/salesmen").then((res) => setSalesmen(res.data));
+  }, []);
+
+  const addSalesman = async () => {
+    try {
+      await axios.post("/api/salesmen", { name });
+      toast.success("Salesman Added");
+      setName("");
+      axios.get("/api/salesmen").then((res) => setSalesmen(res.data));
+    } catch (err) {
+      toast.error("Failed");
+    }
   };
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Salesman Tracking</h2>
-      <form onSubmit={addStaff} className="flex gap-2">
+    <div className="flex">
+      <Sidebar />
+      <div className="flex-1 p-8">
+        <h1 className="text-3xl font-bold mb-6">Manage Salesmen</h1>
         <input
-          name="staffName"
-          placeholder="New Salesman Name"
-          className="border p-2 flex-1"
-          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Salesman Name"
+          className="border p-2"
         />
-        <button className="bg-green-600 text-white px-4 py-2 rounded">
-          Add Salesman
+        <button
+          onClick={addSalesman}
+          className="bg-blue-600 text-white py-2 px-4 rounded ml-2"
+        >
+          Add
         </button>
-      </form>
-
-      <div className="bg-white p-4 shadow rounded">
-        {staff.map((s) => (
-          <div key={s.id} className="flex justify-between border-b py-2">
-            <span>{s.name}</span>
-            <span className="font-bold text-blue-600">
-              Total Sale: ৳{s.totalSale}
-            </span>
-          </div>
-        ))}
+        <ul className="mt-8 space-y-2">
+          {salesmen.map((sm) => (
+            <li key={sm.id} className="border p-2">
+              {sm.name} - Total Sales: {sm.totalSales || 0}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

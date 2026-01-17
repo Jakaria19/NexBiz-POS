@@ -1,34 +1,35 @@
+// Copy Customers page and filter cust.due > 0
 import Sidebar from "@/components/Sidebar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function Customers() {
-  const [customers, setCustomers] = useState([]);
+export default function Dues() {
+  const [dues, setDues] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/customers").then((res) => setCustomers(res.data));
+    axios
+      .get("/api/customers")
+      .then((res) => setDues(res.data.filter((c) => c.due > 0)));
   }, []);
 
   return (
     <div className="flex">
       <Sidebar />
       <div className="flex-1 p-8">
-        <h1 className="text-3xl font-bold mb-6">Customer List</h1>
+        <h1 className="text-3xl font-bold mb-6">Due List</h1>
         <table className="w-full border">
           <thead>
             <tr>
               <th>Name</th>
               <th>Phone</th>
-              <th>Total Amount</th>
               <th>Due</th>
             </tr>
           </thead>
           <tbody>
-            {customers.map((cust) => (
+            {dues.map((cust) => (
               <tr key={cust.id}>
                 <td>{cust.name}</td>
                 <td>{cust.phone}</td>
-                <td>{cust.totalAmount}</td>
                 <td>{cust.due}</td>
               </tr>
             ))}

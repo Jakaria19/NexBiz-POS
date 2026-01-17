@@ -1,15 +1,21 @@
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+
+export const metadata = {
+  title: "NexBiz - Inventory Management",
+  description: "Modern inventory and sales management app",
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="antialiased selection:bg-blue-500 selection:text-white">
-        <Toaster position="top-center" />
-        <div className="flex">
-          {/* Main Content Area */}
-          <main className="flex-1 min-h-screen">{children}</main>
-        </div>
+      <body>
+        <Toaster position="top-right" />
+        <Navbar />
+        <main className="min-h-screen">{children}</main>
+        <Footer />
       </body>
     </html>
   );
