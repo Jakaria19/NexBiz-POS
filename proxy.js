@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export function middleware(request) {
+export function proxy(request) {
   const auth = request.cookies.get("auth")?.value;
   const role = request.cookies.get("role")?.value;
 
