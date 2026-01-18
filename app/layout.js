@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Sidebar from "@/components/Sidebar";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "NexBiz",
