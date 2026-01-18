@@ -9,24 +9,23 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState(""); // demo/admin/manager
+  const [role, setRole] = useState("");
 
-  // Optional: যদি cookie থেকে pre-fill করতে চাও (কিন্তু সাধারণত না লাগে)
   useEffect(() => {
-    // server-এ চলবে না
-    if (typeof window !== "undefined") {
-      const existingRole = document.cookie
+    // Double check: only browser
+    if (typeof window === "undefined") return;
+
+    const cookieRole =
+      document.cookie
         .split("; ")
         .find((row) => row.startsWith("role="))
-        ?.split("=")[1];
+        ?.split("=")[1] || null;
 
-      if (existingRole) {
-        setRole(existingRole);
-      }
-    }
+    setRole(cookieRole);
   }, []);
 
   const handleDemo = () => {
+    if (typeof window === "undefined") return;
     document.cookie = "auth=democheck; path=/; max-age=3600";
     document.cookie = "role=demo; path=/; max-age=3600";
     toast.success("Demo Mode Activated");
@@ -55,7 +54,7 @@ export default function LoginPage() {
         toast.error("Invalid credentials");
       }
     } catch (err) {
-      toast.error("Login failed. Check console.");
+      toast.error("Login failed");
       console.error(err);
     }
   };
