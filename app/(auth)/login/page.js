@@ -12,20 +12,19 @@ export default function LoginPage() {
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    // Double check: only browser
-    if (typeof window === "undefined") return;
-
-    const cookieRole =
-      document.cookie
+    if (typeof window !== "undefined") {
+      const existingRole = document.cookie
         .split("; ")
         .find((row) => row.startsWith("role="))
-        ?.split("=")[1] || null;
+        ?.split("=")[1];
 
-    setRole(cookieRole);
+      if (existingRole) {
+        setRole(existingRole);
+      }
+    }
   }, []);
 
   const handleDemo = () => {
-    if (typeof window === "undefined") return;
     document.cookie = "auth=democheck; path=/; max-age=3600";
     document.cookie = "role=demo; path=/; max-age=3600";
     toast.success("Demo Mode Activated");

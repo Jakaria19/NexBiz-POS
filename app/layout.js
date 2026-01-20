@@ -2,8 +2,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import Sidebar from "@/components/Sidebar";
 import { Suspense } from "react";
+import Sidebar from "@/components/Sidebar";
 
 export const metadata = {
   title: "NexBiz",

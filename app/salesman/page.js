@@ -27,7 +27,7 @@ export default function Salesmen() {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="flex-1 p-8">
+      <div className="flex-1 p-8 ml-64">
         <h1 className="text-3xl font-bold mb-6">Manage Salesmen</h1>
         <input
           value={name}

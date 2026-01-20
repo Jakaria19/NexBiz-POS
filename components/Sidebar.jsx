@@ -7,26 +7,15 @@ export default function Sidebar() {
   const [role, setRole] = useState(null);
 
   useEffect(() => {
-    // Only runs in browser
     if (typeof window !== "undefined") {
       const cookieRole =
         document.cookie
           .split("; ")
           .find((row) => row.startsWith("role="))
           ?.split("=")[1] || null;
-
       setRole(cookieRole);
     }
   }, []);
-
-  // Optional: loading state যদি চাও
-  if (role === null) {
-    return (
-      <div className="w-64 bg-gray-800 text-white h-screen p-4 fixed top-0 left-0">
-        <p className="text-center">Loading...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="w-64 bg-gray-800 text-white h-screen p-4 fixed top-0 left-0 overflow-y-auto">
@@ -87,6 +76,22 @@ export default function Sidebar() {
             Salesmen
           </Link>
         </li>
+        <li>
+          <Link
+            href="/collections"
+            className="block p-2 hover:bg-gray-700 rounded"
+          >
+            Add Collection
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/payments"
+            className="block p-2 hover:bg-gray-700 rounded"
+          >
+            Add Payment
+          </Link>
+        </li>
         {role !== "manager" && (
           <li>
             <Link
@@ -98,19 +103,6 @@ export default function Sidebar() {
           </li>
         )}
       </ul>
-
-      <div className="mt-10">
-        <button
-          onClick={() => {
-            document.cookie = "auth=; path=/; max-age=0";
-            document.cookie = "role=; path=/; max-age=0";
-            window.location.href = "/login";
-          }}
-          className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded"
-        >
-          Logout
-        </button>
-      </div>
     </div>
   );
 }

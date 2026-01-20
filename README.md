@@ -1,35 +1,29 @@
 # NexBiz
 
-Short project description: Modern inventory management app for shops using Next.js.
+Project description: Modern inventory app with sales, customers, dealers, dues, collections, payments, summary.
 
-Setup & installation instructions:
+Setup:
 
 1. npm install
 2. npm run dev
 
-Route summary:
+Routes:
 
 - / : Landing
 - /login : Login
 - /dashboard : Dashboard
 - /products : Products
+- /categories : Categories
 - /sales : Add Sale
 - /sales/list : Sale List
 - /customers : Customers
 - /dealers : Dealers
 - /dues : Dues
 - /salesmen : Salesmen
+- /collections : Add Collection
+- /payments : Add Payment
 - /summary : Summary
 
-Implemented features:
+Features:
 
-- All as per requirements.
-
-Brief explanation:
-
-- Demo mode uses hardcoded data.
-- Admin/Manager use API (in-memory for sim).
-- Toasts everywhere.
-- Charts with Recharts.
-- Bill print with react-to-print.
-- Barcode with jsbarcode (simulate input).
+- All requirements implemented, including sorting, top lists, print, collections, payments, summary templates/sliders.

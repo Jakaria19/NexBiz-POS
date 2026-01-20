@@ -5,84 +5,53 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export default function CategoriesPage() {
+export default function Categories() {
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await axios.get("/api/categories");
-        setCategories(res.data || []);
-      } catch (err) {
-        console.error("Failed to load categories", err);
-      }
-    };
-    fetchCategories();
+    axios.get("/api/categories").then((res) => setCategories(res.data));
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name.trim()) {
-      toast.error("Category name is required");
-      return;
-    }
-
     try {
       await axios.post("/api/categories", { name });
-      toast.success("Category added successfully");
+      toast.success("Category Added");
       setName("");
-
-      // Refresh list
-      const res = await axios.get("/api/categories");
-      setCategories(res.data || []);
+      axios.get("/api/categories").then((res) => setCategories(res.data));
     } catch (err) {
-      toast.error("Failed to add category");
-      console.error(err);
+      toast.error("Failed");
     }
   };
 
   return (
     <div className="flex">
       <Sidebar />
-
       <div className="flex-1 p-8 ml-64">
-        <h1 className="text-3xl font-bold mb-6">Manage Categories</h1>
-
-        <form onSubmit={handleSubmit} className="max-w-md space-y-4 mb-10">
+        <h1 className="text-3xl font-bold mb-6">Add Category</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
-            type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter category name"
-            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Category Name"
+            className="w-full border p-2"
             required
           />
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition"
+            className="bg-blue-600 text-white py-2 px-4 rounded"
           >
-            Add Category
+            Add
           </button>
         </form>
-
-        <h2 className="text-2xl font-semibold mb-4">Existing Categories</h2>
-
-        {categories.length === 0 ? (
-          <p className="text-gray-500">No categories added yet.</p>
-        ) : (
-          <ul className="space-y-2">
-            {categories.map((cat) => (
-              <li
-                key={cat.id}
-                className="p-3 border rounded bg-gray-50 flex justify-between items-center"
-              >
-                <span>{cat.name}</span>
-                {/* Optional: Delete button later */}
-              </li>
-            ))}
-          </ul>
-        )}
+        <ul className="mt-8 space-y-2">
+          {categories.map((cat) => (
+            <li key={cat.id} className="border p-2">
+              {cat.name}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

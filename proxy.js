@@ -1,33 +1,19 @@
 import { NextResponse } from "next/server";
 
-export function proxy(request) {
+export function middleware(request) {
   const auth = request.cookies.get("auth")?.value;
-  const role = request.cookies.get("role")?.value;
 
-  if (!auth) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  // Manager restrictions
   if (
-    role === "manager" &&
-    (request.nextUrl.pathname === "/summary" ||
-      request.nextUrl.pathname.includes("edit") ||
-      request.nextUrl.pathname.includes("delete"))
+    protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path))
   ) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    if (!auth || auth !== "true") {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    "/dashboard/:path*",
-    "/products/:path*",
-    "/sales/:path*",
-    "/customers/:path*",
-    "/dealers/:path*",
-    "/summary/:path*",
-  ],
+  matcher: ["/add-item/:path*", "/dashboard/:path*"],
 };

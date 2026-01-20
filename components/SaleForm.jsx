@@ -18,6 +18,7 @@ export default function SaleForm({ onSuccess }) {
   const barcodeRef = useRef(null);
   const [newCustomer, setNewCustomer] = useState({ name: "", phone: "" });
   const [showNewCustomer, setShowNewCustomer] = useState(false);
+  const [saleType, setSaleType] = useState("sale"); // sale, return, view-only
 
   useEffect(() => {
     axios.get("/api/customers").then((res) => setCustomers(res.data));
@@ -37,16 +38,16 @@ export default function SaleForm({ onSuccess }) {
     toast.success(`${product.name} added to cart`);
   };
 
-  const handleScan = (e) => setBarcode(e.target.value); // Simulate scan with input
+  const handleScan = (e) => setBarcode(e.target.value);
 
   const calculateTotal = () => {
     const subtotal = cart.reduce(
       (sum, item) => sum + item.sellPrice * item.qty,
-      0
+      0,
     );
     const profit = cart.reduce(
       (sum, item) => sum + (item.sellPrice - item.buyPrice) * item.qty,
-      0
+      0,
     );
     return { subtotal, total: subtotal - discount, profit };
   };
@@ -54,15 +55,40 @@ export default function SaleForm({ onSuccess }) {
   const handleSubmit = async () => {
     const { total, profit } = calculateTotal();
     try {
-      await axios.post("/api/sales", {
-        cart,
-        customerId: customer?.id,
-        discount,
-        paymentMethod,
-        total,
-        profit,
-      });
-      toast.success("Sale Added");
+      if (saleType === "sale") {
+        await axios.post("/api/sales", {
+          cart,
+          customerId: customer?.id,
+          discount,
+          paymentMethod,
+          total,
+          profit,
+          type: "sale",
+        });
+        toast.success("Sale Added");
+      } else if (saleType === "return") {
+        await axios.post("/api/sales", {
+          cart,
+          customerId: customer?.id,
+          discount,
+          paymentMethod,
+          total,
+          profit,
+          type: "return",
+        });
+        toast.success("Return Processed");
+      } else if (saleType === "view-only") {
+        await axios.post("/api/sales", {
+          cart,
+          customerId: customer?.id,
+          discount,
+          paymentMethod,
+          total,
+          profit,
+          type: "view-only",
+        });
+        toast.success("View-Only Logged");
+      }
       if (customer) {
         await axios.put(`/api/customers/${customer.id}`, {
           totalAmount: customer.totalAmount + total,
@@ -90,7 +116,7 @@ export default function SaleForm({ onSuccess }) {
   const selectCustomer = (cust) => {
     setCustomer(cust);
     toast.success(
-      `Selected ${cust.name} | Prev Amount: ${cust.totalAmount} | Due: ${cust.due}`
+      `Selected ${cust.name} | Prev Amount: ${cust.totalAmount} | Due: ${cust.due}`,
     );
   };
 
@@ -100,6 +126,20 @@ export default function SaleForm({ onSuccess }) {
 
   return (
     <div className="space-y-4">
+      {/* Sale Type */}
+      <div>
+        <label>Sale Type</label>
+        <select
+          value={saleType}
+          onChange={(e) => setSaleType(e.target.value)}
+          className="w-full border p-2"
+        >
+          <option value="sale">Sale</option>
+          <option value="return">Return</option>
+          <option value="view-only">View Only</option>
+        </select>
+      </div>
+
       {/* Customer Search/Add */}
       <div>
         <label>Search Customer</label>
@@ -228,7 +268,7 @@ export default function SaleForm({ onSuccess }) {
         onClick={handleSubmit}
         className="bg-blue-600 text-white py-2 px-4 rounded"
       >
-        Complete Sale
+        Complete
       </button>
 
       {/* Bill Print */}

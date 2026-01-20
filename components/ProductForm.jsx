@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function ProductForm({ onSuccess }) {
-  const [form, setForm] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     category: "",
     brand: "",
@@ -12,71 +13,68 @@ export default function ProductForm({ onSuccess }) {
     sellPrice: "",
     date: new Date().toISOString().split("T")[0],
   });
-
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/categories").then((r) => setCategories(r.data || []));
-    axios.get("/api/brands").then((r) => setBrands(r.data || []));
+    axios.get("/api/categories").then((res) => setCategories(res.data));
+    axios.get("/api/brands").then((res) => setBrands(res.data));
   }, []);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/products", form);
+      await axios.post("/api/products", formData);
+      toast.success("Product Added");
       onSuccess();
-      setForm({
-        name: "",
-        category: "",
-        brand: "",
-        buyPrice: "",
-        sellPrice: "",
-        date: new Date().toISOString().split("T")[0],
+      // Auto add to dealer
+      await axios.post("/api/dealers", {
+        product: formData.name,
+        amount: formData.buyPrice,
+        invoice: "auto",
       });
     } catch (err) {
-      console.error(err);
-      alert("Failed to add product");
+      toast.error("Failed to Add Product");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-lg">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <input
         name="name"
         placeholder="Product Name"
-        value={form.name}
+        value={formData.name}
         onChange={handleChange}
-        className="w-full p-2 border rounded"
+        className="w-full border p-2"
         required
       />
       <select
         name="category"
-        value={form.category}
+        value={formData.category}
         onChange={handleChange}
-        className="w-full p-2 border rounded"
+        className="w-full border p-2"
       >
         <option value="">Select Category</option>
-        {categories.map((c) => (
-          <option key={c.id} value={c.name}>
-            {c.name}
+        {categories.map((cat) => (
+          <option key={cat.id} value={cat.name}>
+            {cat.name}
           </option>
         ))}
       </select>
       <select
         name="brand"
-        value={form.brand}
+        value={formData.brand}
         onChange={handleChange}
-        className="w-full p-2 border rounded"
+        className="w-full border p-2"
       >
         <option value="">Select Brand</option>
-        {brands.map((b) => (
-          <option key={b.id} value={b.name}>
-            {b.name}
+        {brands.map((brand) => (
+          <option key={brand.id} value={brand.name}>
+            {brand.name}
           </option>
         ))}
       </select>
@@ -84,31 +82,31 @@ export default function ProductForm({ onSuccess }) {
         name="buyPrice"
         type="number"
         placeholder="Buying Price"
-        value={form.buyPrice}
+        value={formData.buyPrice}
         onChange={handleChange}
-        className="w-full p-2 border rounded"
+        className="w-full border p-2"
         required
       />
       <input
         name="sellPrice"
         type="number"
         placeholder="Selling Price"
-        value={form.sellPrice}
+        value={formData.sellPrice}
         onChange={handleChange}
-        className="w-full p-2 border rounded"
+        className="w-full border p-2"
         required
       />
       <input
         name="date"
         type="date"
-        value={form.date}
+        value={formData.date}
         onChange={handleChange}
-        className="w-full p-2 border rounded"
+        className="w-full border p-2"
         required
       />
       <button
         type="submit"
-        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+        className="bg-blue-600 text-white py-2 px-4 rounded"
       >
         Add Product
       </button>
