@@ -4,19 +4,20 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 
 export default function Sidebar() {
-  const [role, setRole] = useState(null);
+  // const [role, setRole] = useState(null);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  // useEffect(() => {
+  //   if (typeof window === 'undefined') return;
+  //   const cookieRole = document.cookie
+  //     .split('; ')
+  //     .find(row => row.startsWith('role='))
+  //     ?.split('=')[1] || null;
+  //   setRole(cookieRole);
+  // }, []);
 
-    const cookieRole =
-      document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("role="))
-        ?.split("=")[1] || null;
-
-    setRole(cookieRole);
-  }, []);
+  // if (role === null) {
+  //   return <div className="w-64 bg-gray-800 h-screen" />;
+  // }
 
   return (
     <div className="w-64 bg-gray-800 text-white h-screen p-4 fixed top-0 left-0 overflow-y-auto">
@@ -93,7 +94,7 @@ export default function Sidebar() {
             Add Payment
           </Link>
         </li>
-        {role !== "manager" && (
+        {/* {role !== "manager" && (
           <li>
             <Link
               href="/summary"
@@ -102,7 +103,12 @@ export default function Sidebar() {
               Summary
             </Link>
           </li>
-        )}
+        )} */}
+        <li>
+          <Link href="/summary" className="block p-2 hover:bg-gray-700 rounded">
+            Summary
+          </Link>
+        </li>
         <li>
           <Link
             href="/barcodes"

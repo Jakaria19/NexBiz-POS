@@ -11,18 +11,18 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const existingRole = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("role="))
-        ?.split("=")[1];
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const existingRole = document.cookie
+  //       .split("; ")
+  //       .find((row) => row.startsWith("role="))
+  //       ?.split("=")[1];
 
-      if (existingRole) {
-        setRole(existingRole);
-      }
-    }
-  }, []);
+  //     if (existingRole) {
+  //       setRole(existingRole);
+  //     }
+  //   }
+  // }, []);
 
   const handleDemo = () => {
     document.cookie = "auth=democheck; path=/; max-age=3600";
