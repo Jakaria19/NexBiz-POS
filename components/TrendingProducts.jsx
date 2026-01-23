@@ -7,7 +7,6 @@ export default function TrendingProducts({ onAdd }) {
   const [trending, setTrending] = useState([]);
 
   useEffect(() => {
-    // Simulate trending from sales data
     axios
       .get("/api/sales?trending=true")
       .then((res) => setTrending(res.data.slice(0, 5)));

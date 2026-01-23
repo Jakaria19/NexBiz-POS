@@ -1,10 +1,10 @@
 "use client";
 
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "../../components/Sidebar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
-import SalesChart from "@/components/Charts";
+import SalesChart from "../../components/Charts";
 
 export default function Summary() {
   const [date, setDate] = useState(dayjs().format("YYYY-MM-DD"));

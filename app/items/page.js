@@ -1,10 +1,8 @@
-// src/app/items/page.js
 import Link from "next/link";
 
 export default async function ItemsPage() {
-  // Replace with your Express server URL if different
   const res = await fetch(
-    "https://jsonplaceholder.typicode.com/posts?_limit=6"
+    "https://jsonplaceholder.typicode.com/posts?_limit=6",
   );
   const items = await res.json();
 

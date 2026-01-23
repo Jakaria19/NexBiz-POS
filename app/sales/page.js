@@ -1,7 +1,7 @@
 "use client";
 
-import Sidebar from "@/components/Sidebar";
-import SaleForm from "@/components/SaleForm";
+import Sidebar from "../../components/Sidebar";
+import SaleForm from "../../components/SaleForm";
 
 export default function AddSale() {
   return (

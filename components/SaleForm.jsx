@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import JsBarcode from "jsbarcode";
-import TrendingProducts from "@/components/TrendingProducts";
-import BillPrint from "@/components/BillPrint";
+import TrendingProducts from "./TrendingProducts";
+import BillPrint from "./BillPrint";
 
 export default function SaleForm({ onSuccess }) {
   const [customer, setCustomer] = useState(null);
@@ -18,7 +18,7 @@ export default function SaleForm({ onSuccess }) {
   const barcodeRef = useRef(null);
   const [newCustomer, setNewCustomer] = useState({ name: "", phone: "" });
   const [showNewCustomer, setShowNewCustomer] = useState(false);
-  const [saleType, setSaleType] = useState("sale"); // sale, return, view-only
+  const [saleType, setSaleType] = useState("sale");
 
   useEffect(() => {
     axios.get("/api/customers").then((res) => setCustomers(res.data));

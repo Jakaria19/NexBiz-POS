@@ -28,15 +28,22 @@ export default function ProductForm({ onSuccess }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/products", formData);
-      toast.success("Product Added");
+      // Generate barcode
+      const year = new Date(formData.date).getFullYear().toString().slice(-2);
+      const month = (new Date(formData.date).getMonth() + 1)
+        .toString()
+        .padStart(2, "0");
+      const category = categories.find((c) => c.name === formData.category);
+      const categoryInitial = category.initial || "XX";
+      const brandCode = formData.brand.slice(0, 3).toUpperCase(); // Example brand code
+      const serial = Math.floor(Math.random() * 1000)
+        .toString()
+        .padStart(3, "0"); // Random serial
+      const barcode = year + month + categoryInitial + brandCode + serial;
+
+      await axios.post("/api/products", { ...formData, barcode });
+      toast.success("Product Added with Barcode: " + barcode);
       onSuccess();
-      // Auto add to dealer
-      await axios.post("/api/dealers", {
-        product: formData.name,
-        amount: formData.buyPrice,
-        invoice: "auto",
-      });
     } catch (err) {
       toast.error("Failed to Add Product");
     }

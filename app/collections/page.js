@@ -1,10 +1,10 @@
 "use client";
 
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "../../components/Sidebar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import BillPrint from "@/components/BillPrint";
+import BillPrint from "../../components/BillPrint";
 
 export default function Collections() {
   const [customers, setCustomers] = useState([]);

@@ -102,6 +102,14 @@ export default function Sidebar() {
             </Link>
           </li>
         )}
+        <li>
+          <Link
+            href="/barcodes"
+            className="block p-2 hover:bg-gray-700 rounded"
+          >
+            Barcode Generator
+          </Link>
+        </li>
       </ul>
     </div>
   );
