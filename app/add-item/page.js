@@ -1,3 +1,5 @@
+"use client";
+
 export default function AddItem() {
   const handleSubmit = (e) => {
     e.preventDefault();
