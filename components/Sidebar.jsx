@@ -7,14 +7,15 @@ export default function Sidebar() {
   const [role, setRole] = useState(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const cookieRole =
-        document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("role="))
-          ?.split("=")[1] || null;
-      setRole(cookieRole);
-    }
+    if (typeof window === "undefined") return;
+
+    const cookieRole =
+      document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("role="))
+        ?.split("=")[1] || null;
+
+    setRole(cookieRole);
   }, []);
 
   return (
