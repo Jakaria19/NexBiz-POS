@@ -33,11 +33,14 @@ export default function Navbar() {
             >
               Dashboard
             </Link>
-            {document.cookie.includes("auth=") && (
+            {/* {document.cookie.includes("auth=") && (
               <button onClick={handleLogout} className="text-red-600">
                 Logout
               </button>
-            )}
+            )} */}
+            <button onClick={handleLogout} className="text-red-600">
+              Logout
+            </button>
           </div>
         </div>
       </div>
